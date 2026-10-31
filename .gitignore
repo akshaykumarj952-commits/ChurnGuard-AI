@@ -1,0 +1,19 @@
+.venv/
+.venv*/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.streamlit/secrets.toml
+
+# Private data
+data/raw/
+data/processed/customers_features.csv
+churnguard_profile.json
+
+# Backups and duplicate phase folder
+backups/
+ChurnGuardAI_phase1-3/
+
+# Local environment
+.env
+.env.*

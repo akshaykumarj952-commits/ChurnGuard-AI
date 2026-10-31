@@ -1,0 +1,112 @@
+{
+  "config": {
+    "cutoff_date": "2011-09-09",
+    "window_days": 90,
+    "non_product_codes": [
+      "POST",
+      "DOT",
+      "M",
+      "C2",
+      "BANK CHARGES",
+      "D",
+      "S",
+      "AMAZONFEE",
+      "CRUK",
+      "B"
+    ],
+    "drop_duplicate_rows": false
+  },
+  "summary": {
+    "raw_rows": 541909,
+    "raw_customers_with_id": 4372,
+    "data_start": "2010-12-01 08:26:00",
+    "data_end": "2011-12-09 12:50:00",
+    "anonymous_rows": 135080,
+    "anonymous_rows_share_pct": 24.93,
+    "anonymous_positive_line_value": 1755276.64,
+    "non_c_alpha_invoices": 3,
+    "cancellation_rows_kept": 8539,
+    "cancellation_nonproduct_rows_dropped": 366,
+    "valid_rows": 396340,
+    "valid_customers": 4334,
+    "valid_invoices": 18402,
+    "valid_revenue": 8761066.65,
+    "exact_duplicate_rows_in_valid": 5187,
+    "currency": "GBP (UCI lists UnitPrice in sterling)"
+  },
+  "steps": [
+    {
+      "step": "0_unparseable",
+      "rule": "InvoiceDate, Quantity or UnitPrice could not be read",
+      "rows_before": 541909,
+      "rows_removed": 0,
+      "rows_after": 541909,
+      "line_value_removed": 0.0,
+      "note": ""
+    },
+    {
+      "step": "1_missing_customer_id",
+      "rule": "CustomerID is blank; transaction cannot be linked to a customer",
+      "rows_before": 541909,
+      "rows_removed": 135080,
+      "rows_after": 406829,
+      "line_value_removed": 1447682.12,
+      "note": "Excluded from customer-level analysis only. Their size is reported in summary['anonymous_*'] so the exclusion is visible."
+    },
+    {
+      "step": "2_cancellations",
+      "rule": "InvoiceNo starts with 'C' (UCI: cancellation)",
+      "rows_before": 406829,
+      "rows_removed": 8905,
+      "rows_after": 397924,
+      "line_value_removed": -611342.09,
+      "note": "Moved to a separate table; never counted as a purchase."
+    },
+    {
+      "step": "3_non_positive_qty_or_price",
+      "rule": "Quantity <= 0 or UnitPrice <= 0 on a non-cancellation row",
+      "rows_before": 397924,
+      "rows_removed": 40,
+      "rows_after": 397884,
+      "line_value_removed": 0.0,
+      "note": "0 rows with Quantity<=0, 40 rows with UnitPrice<=0 (a row can be in both)."
+    },
+    {
+      "step": "4_non_product_codes",
+      "rule": "StockCode is a service/fee code, not a product: AMAZONFEE, B, BANK CHARGES, C2, CRUK, D, DOT, M, POST, S",
+      "rows_before": 397884,
+      "rows_removed": 1544,
+      "rows_after": 396340,
+      "line_value_removed": 150341.25,
+      "note": "Postage, carriage, manual entries, fees etc. are not product purchases."
+    },
+    {
+      "step": "5_exact_duplicates",
+      "rule": "Reported only (not removed)",
+      "rows_before": 396340,
+      "rows_removed": 0,
+      "rows_after": 396340,
+      "line_value_removed": 0.0,
+      "note": "5187 rows are exact duplicates of an earlier row. They may be genuine repeated scan lines, so they are kept by default (set drop_duplicate_rows=True to test sensitivity)."
+    }
+  ],
+  "framework": {
+    "cutoff_date": "2011-09-09",
+    "window_start": "2011-09-10",
+    "window_end": "2011-12-08",
+    "window_days": 90,
+    "last_complete_day_in_data": "2011-12-08",
+    "eligible_customers": 3368,
+    "inactive_customers": 1451,
+    "active_customers": 1917,
+    "inactivity_rate": 0.4308,
+    "valid_customers_total": 4334,
+    "customers_first_seen_after_cutoff_excluded": 966,
+    "history_rows": 235407,
+    "window_rows": 160321,
+    "recency_definition": "days from the customer's last valid purchase date to the cutoff date (0 = purchased on cutoff day)",
+    "frequency_definition": "number of distinct valid invoices on or before the cutoff",
+    "monetary_definition": "sum of Quantity x UnitPrice over valid product lines on or before the cutoff (GBP)",
+    "outcome_definition": "outcome_inactive = 1 if the customer has no valid purchase in the observation window"
+  }
+}
