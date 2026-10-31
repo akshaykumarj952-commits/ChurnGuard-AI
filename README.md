@@ -1,1008 +1,553 @@
-&#x20;ChurnGuard AI
+ChurnGuard AI
+An Open-Source Statistical Framework for Customer Retention Analysis Using Python
 
+<p align="center"> <strong>Customer Analytics · RFM Segmentation · Statistical Computing · Data Visualisation</strong> </p>
 
+<p align="center"> <img src="https://img.shields.io/badge/Python-3.x-blue?logo=python" alt="Python"> <img src="https://img.shields.io/badge/Framework-Streamlit-FF4B4B?logo=streamlit" alt="Streamlit"> <img src="https://img.shields.io/badge/Analysis-SciPy-8CAAE6" alt="SciPy"> <img src="https://img.shields.io/badge/Status-In%20Development-orange" alt="In Development"> </p>
 
-&#x20;An Open-Source Statistical Framework for Customer Retention Analysis Using Python
-
-
-
-<p align="center">
-
-&#x20; <b>Customer Analytics · RFM Segmentation · Statistical Computing · Data Visualisation</b>
-
-</p>
-
-
-
-ChurnGuard AI is a Python-based customer retention analysis framework designed to investigate customer purchasing behaviour, identify inactivity patterns, and explore relationships between historical purchasing activity and future customer behaviour.
-
-
+ChurnGuard AI is a Python-based customer retention analysis framework designed to investigate purchasing behaviour, identify inactivity patterns, and explore relationships between historical purchasing activity and future customer behaviour.
 
 The project combines customer-level RFM analysis, transparent heuristic risk scoring, statistical evaluation, and interactive visualisation.
 
+Research proposal: Submitted to SciPy India 2026 as a poster proposal.
 
+Development status: The initial data engineering pipeline and 18 automated tests are complete. Standalone scoring equivalence, statistical analysis, sensitivity testing, and final dashboard integration remain under development.
 
-\*\*Research proposal:\*\* Submitted to SciPy India 2026 as a poster proposal.
-
-
-
-> \*\*Development status:\*\* Initial data engineering pipeline and 18 automated tests completed. Standalone scoring equivalence, statistical analysis, sensitivity testing, and final dashboard integration remain under development.
-
-
-
-\---
-
-
-
-1\. Project Overview
-
-
+1. Project Overview
 
 Customer retention is an important challenge for businesses operating in competitive markets.
 
-
-
 ChurnGuard explores how historical purchasing behaviour can help identify customers who may become inactive.
-
-
 
 Rather than treating a heuristic score as a machine-learning prediction, the framework separates:
 
-
-
-\* Historical customer behaviour.
-
-\* Rule-based risk indicators.
-
-\* Observed future inactivity.
-
-\* Statistical associations.
-
-\* Predictive performance evaluation.
-
-
+Historical customer behaviour
+Rule-based risk indicators
+Observed future inactivity
+Statistical associations
+Predictive performance evaluation
 
 The primary objective is to create a transparent and reproducible statistical framework using Python and the scientific computing ecosystem.
 
+2. System Architecture
 
+ChurnGuard follows a modular architecture that separates data preparation, feature engineering, statistical analysis, and presentation.
 
-2\. System Architecture
+Architecture Overview
+flowchart TB
+    subgraph INPUT["DATA SOURCE"]
+        A["UCI Online Retail Dataset"]
+    end
 
+    subgraph PREP["DATA ENGINEERING"]
+        B["Data Ingestion"]
+        C["Data Cleaning"]
+        D["Data Quality Audit"]
+        E["Customer-Level Feature Engineering"]
+        F["RFM Feature Dataset"]
+    end
 
+    subgraph ANALYSIS["ANALYTICAL LAYER"]
+        G["Heuristic Risk Scoring"]
+        H["Statistical Analysis"]
+        I["Risk Categories"]
+        J["Statistical Findings"]
+    end
 
-The project follows a modular architecture that separates data preparation, feature engineering, analysis, and presentation.
+    subgraph OUTPUT["PRESENTATION LAYER"]
+        K["Streamlit Dashboard"]
+        L["Customer Exploration"]
+        M["Retention Insights"]
+        N["Interactive Visualisations"]
+    end
 
+    A --> B --> C --> D --> E --> F
+    F --> G --> I
+    F --> H --> J
+    I --> K
+    J --> K
+    K --> L
+    K --> M
+    K --> N
 
+    classDef source fill:#34495e,color:#ffffff,stroke:#8C8777,stroke-width:1px
+    classDef process fill:#285943,color:#ffffff,stroke:#9BCB87,stroke-width:1px
+    classDef analysis fill:#8A4B27,color:#ffffff,stroke:#F4A261,stroke-width:1px
+    classDef output fill:#34495e,color:#ffffff,stroke:#8C8777,stroke-width:1px
 
-```mermaid
-
-flowchart TD
-
-&#x20;   A\["UCI Online Retail Dataset"] --> B\["Data Ingestion"]
-
-&#x20;   B --> C\["Data Cleaning"]
-
-&#x20;   C --> D\["Data Quality Audit"]
-
-&#x20;   D --> E\["Customer-Level Feature Engineering"]
-
-&#x20;   E --> F\["RFM Feature Dataset"]
-
-
-
-&#x20;   F --> G\["Heuristic Risk Scoring"]
-
-&#x20;   F --> H\["Statistical Analysis"]
-
-
-
-&#x20;   G --> I\["Customer Risk Categories"]
-
-&#x20;   H --> J\["Statistical Findings"]
-
-
-
-&#x20;   I --> K\["Streamlit Dashboard"]
-
-&#x20;   J --> K
-
-
-
-&#x20;   K --> L\["Interactive Customer Analytics"]
-
-&#x20;   K --> M\["Retention Insights"]
-
-&#x20;   K --> N\["Visual Exploration"]
-
-
-
-&#x20;   style A fill:#243447,color:#fff
-
-&#x20;   style F fill:#285943,color:#fff
-
-&#x20;   style K fill:#34495e,color:#fff
-
-```
-
-
-
+    class A source
+    class B,C,D,E,F process
+    class G,H,I,J analysis
+    class K,L,M,N output
 Core Components
-
-
-
-| Component            | Responsibility                                     |
-
-| -------------------- | -------------------------------------------------- |
-
-| Data Pipeline        | Cleaning and validating transaction data           |
-
-| Feature Engineering  | Creating customer-level RFM features               |
-
-| Heuristic Scoring    | Calculating transparent risk indicators            |
-
-| Statistical Analysis | Testing relationships and estimating effect sizes  |
-
-| Dashboard            | Interactive customer exploration and visualisation |
-
-
-
-3\. Data Processing Pipeline
-
-
+Component	Responsibility
+Data Pipeline	Cleaning and validating transaction data
+Feature Engineering	Creating customer-level RFM features
+Heuristic Scoring	Calculating transparent risk indicators
+Statistical Analysis	Testing relationships and estimating effect sizes
+Dashboard	Interactive customer exploration and visualisation
+3. Data Processing Pipeline
 
 ChurnGuard uses the UCI Online Retail dataset.
 
-
-
 The original dataset contains 541,909 transaction records covering December 2010 to December 2011.
-
-
 
 The preprocessing pipeline applies documented cleaning and exclusion rules.
 
+Processing Workflow
+flowchart TB
+    A["Raw Transactions<br/>541,909 records"]
 
+    B["Remove Missing Customer IDs<br/>135,080 excluded"]
 
-```mermaid
+    C["Exclude Cancellation Invoices<br/>8,905 excluded"]
 
-flowchart TD
+    D["Filter Invalid Prices<br/>40 excluded"]
 
-&#x20;   A\["Raw Transactions<br/>541,909 rows"] --> B\["Remove Missing Customer IDs"]
+    E["Exclude Non-Product Transactions<br/>1,544 excluded"]
 
-&#x20;   B --> C\["Exclude Cancellation Invoices"]
+    F["Eligible Transaction Records<br/>396,340 records"]
 
-&#x20;   C --> D\["Filter Invalid Prices"]
+    G["Customer-Level Aggregation"]
 
-&#x20;   D --> E\["Exclude Non-Product Transactions"]
+    H["RFM Feature Engineering"]
 
-&#x20;   E --> F\["Retain Eligible Transaction Records"]
+    I["Historical Inactivity Labelling"]
 
-&#x20;   F --> G\["Customer-Level Aggregation"]
+    J["Processed Customer Dataset"]
 
-&#x20;   G --> H\["RFM Feature Engineering"]
+    A --> B --> C --> D --> E --> F
+    F --> G --> H --> I --> J
 
-&#x20;   H --> I\["Historical Inactivity Labelling"]
+    classDef input fill:#34495e,color:#ffffff,stroke:#8C8777
+    classDef cleaning fill:#8A4B27,color:#ffffff,stroke:#F4A261
+    classDef output fill:#285943,color:#ffffff,stroke:#9BCB87
 
-&#x20;   I --> J\["Processed Customer Dataset"]
-
-
-
-&#x20;   style A fill:#34495e,color:#fff
-
-&#x20;   style F fill:#285943,color:#fff
-
-&#x20;   style J fill:#285943,color:#fff
-
-```
-
-
-
+    class A input
+    class B,C,D,E cleaning
+    class F,G,H,I,J output
 Initial Data Audit
-
-
-
-| Metric                                |  Result |
-
-| ------------------------------------- | ------: |
-
-| Raw transaction records               | 541,909 |
-
-| Missing CustomerID records            | 135,080 |
-
-| Records after missing-ID exclusion    | 406,829 |
-
-| Cancellation invoice records excluded |   8,905 |
-
-| Invalid-price records excluded        |      40 |
-
-| Non-product records excluded          |   1,544 |
-
-| Remaining valid transaction records   | 396,340 |
-
-| Valid customers                       |   4,334 |
-
-
+Metric	Result
+Raw transaction records	541,909
+Missing CustomerID records	135,080
+Records after missing-ID exclusion	406,829
+Cancellation invoice records excluded	8,905
+Invalid-price records excluded	40
+Non-product records excluded	1,544
+Remaining valid transaction records	396,340
+Valid customers	4,334
 
 These figures describe the initial cleaning pipeline. The audit reports preserve the exclusion counts.
 
-
-
 Data quality considerations:
 
-
-
-\* Missing customer identifiers prevent customer-level attribution.
-
-\* Cancellation invoices are excluded from eligible purchases.
-
-\* Invalid prices are excluded.
-
-\* Non-product transaction codes are handled separately.
-
-\* Duplicate records are audited rather than silently discarded.
-
-
+Missing customer identifiers prevent customer-level attribution.
+Cancellation invoices are excluded from eligible purchases.
+Invalid prices are excluded.
+Non-product transaction codes are handled separately.
+Duplicate records are audited rather than silently discarded.
 
 Approximately £1.76 million in positive sales associated with missing customer identifiers is not represented in customer-level RFM analysis. This is an important limitation.
 
-
-
-4\. RFM Feature Engineering
-
-
+4. RFM Feature Engineering
 
 RFM analysis represents customer purchasing behaviour through three features.
 
+Feature Engineering Workflow
+flowchart TB
+    A["Eligible Customer Transactions"]
 
+    subgraph FEATURES["RFM FEATURE CALCULATION"]
+        B["Recency<br/>Days Since Last Purchase"]
+        C["Frequency<br/>Distinct Purchase Invoices"]
+        D["Monetary<br/>Total Purchase Value"]
+    end
 
-```mermaid
+    E["Customer RFM Profile"]
+    F["Customer Segmentation"]
+    G["Heuristic Risk Scoring"]
 
-flowchart LR
+    A --> B
+    A --> C
+    A --> D
 
-&#x20;   A\["Customer Transactions"] --> B\["Recency"]
+    B --> E
+    C --> E
+    D --> E
 
-&#x20;   A --> C\["Frequency"]
+    E --> F
+    E --> G
 
-&#x20;   A --> D\["Monetary"]
+    classDef input fill:#34495e,color:#ffffff,stroke:#8C8777
+    classDef feature fill:#285943,color:#ffffff,stroke:#9BCB87
+    classDef result fill:#8A4B27,color:#ffffff,stroke:#F4A261
 
-
-
-&#x20;   B --> E\["Customer RFM Profile"]
-
-&#x20;   C --> E
-
-&#x20;   D --> E
-
-
-
-&#x20;   E --> F\["Customer Segmentation"]
-
-&#x20;   E --> G\["Risk Scoring"]
-
-```
-
-
-
+    class A input
+    class B,C,D feature
+    class E,F,G result
 Feature Definitions
-
-
-
-| Feature   | Definition                                              |
-
-| --------- | ------------------------------------------------------- |
-
-| Recency   | Days since the customer's most recent eligible purchase |
-
-| Frequency | Number of distinct purchase invoices                    |
-
-| Monetary  | Total eligible purchase value                           |
-
-
+Feature	Definition
+Recency	Days since the customer's most recent eligible purchase
+Frequency	Number of distinct purchase invoices
+Monetary	Total eligible purchase value
 
 The analysis uses GBP (£) as the transaction currency.
 
-
-
-5\. Historical Evaluation Framework
-
-
+5. Historical Evaluation Framework
 
 An important design decision is the separation of historical customer features from future inactivity outcomes.
 
-
-
 This helps prevent temporal data leakage.
 
-
-
 Evaluation Configuration
+Parameter	Configuration
+Historical cutoff	9 September 2011
+Outcome window	10 September – 8 December 2011
+Outcome duration	90 complete days
+Inactivity proxy	No valid purchase during the outcome window
+Temporal Evaluation Workflow
+flowchart TB
+    A["Complete Transaction History"]
+    B["Historical Cutoff<br/>9 September 2011"]
 
+    C["Historical Transactions<br/>Before or On Cutoff"]
+    D["Future Outcome Window<br/>10 September – 8 December"]
 
+    E["Calculate RFM Features"]
+    F["Calculate Heuristic Risk Score"]
 
-| Parameter         | Configuration                               |
+    G["Observe Future Purchases"]
+    H["Determine Inactivity Outcome"]
 
-| ----------------- | ------------------------------------------- |
+    I["Customer-Level Evaluation"]
 
-| Historical cutoff | 9 September 2011                            |
+    A --> B
+    B --> C
+    B --> D
 
-| Outcome window    | 10 September – 8 December 2011              |
+    C --> E
+    C --> F
 
-| Outcome duration  | 90 complete days                            |
+    D --> G --> H
 
-| Inactivity proxy  | No valid purchase during the outcome window |
+    E --> I
+    F --> I
+    H --> I
 
+    classDef history fill:#285943,color:#ffffff,stroke:#9BCB87
+    classDef future fill:#34495e,color:#ffffff,stroke:#8C8777
+    classDef result fill:#8A4B27,color:#ffffff,stroke:#F4A261
 
-
-```mermaid
-
-flowchart TD
-
-&#x20;   A\["Complete Transaction History"] --> B\["Historical Cutoff<br/>9 September 2011"]
-
-
-
-&#x20;   B --> C\["Historical Data"]
-
-&#x20;   B --> D\["Future Outcome Window"]
-
-
-
-&#x20;   C --> E\["Calculate RFM Features"]
-
-&#x20;   C --> F\["Calculate Heuristic Risk Score"]
-
-
-
-&#x20;   D --> G\["Observe Future Purchases"]
-
-&#x20;   G --> H\["Determine Inactivity Outcome"]
-
-
-
-&#x20;   E --> I\["Customer-Level Analysis"]
-
-&#x20;   F --> I
-
-&#x20;   H --> I
-
-
-
-&#x20;   style C fill:#285943,color:#fff
-
-&#x20;   style D fill:#34495e,color:#fff
-
-```
-
-
+    class C,E,F history
+    class D,G,H future
+    class I result
 
 A customer is labelled inactive when they have no valid purchase in the subsequent 90-day window.
 
-
-
 Important: This is an operational inactivity proxy, not proof of permanent customer churn.
 
-
-
 Initial Cohort Results
-
-
-
-| Metric                           | Result |
-
-| -------------------------------- | -----: |
-
-| Eligible customers               |  3,368 |
-
-| Customers classified as inactive |  1,451 |
-
-| Observed inactivity rate         |  43.1% |
-
-
+Metric	Result
+Eligible customers	3,368
+Customers classified as inactive	1,451
+Observed inactivity rate	43.1%
 
 Customers first appearing after the historical cutoff are excluded from the evaluation cohort because they do not have historical purchasing information at the cutoff.
 
-
-
-6\. Heuristic Risk Scoring
-
-
+6. Heuristic Risk Scoring
 
 The existing dashboard uses a transparent rule-based scoring approach.
 
+The score combines three components.
 
+Scoring Architecture
+flowchart TB
+    A["Customer RFM Features"]
 
-The score combines three components:
+    B["Recency Component"]
+    C["Frequency Component"]
+    D["Monetary Component"]
 
+    E["65% Weight"]
+    F["20% Weight"]
+    G["15% Weight"]
 
+    H["Combined Heuristic Score<br/>0–100"]
 
-```mermaid
+    I["Risk Categorisation"]
 
-flowchart TD
+    J["Low Risk"]
+    K["Medium Risk"]
+    L["High Risk"]
 
-&#x20;   A\["Customer RFM Features"] --> B\["Recency Component"]
+    A --> B --> E
+    A --> C --> F
+    A --> D --> G
 
-&#x20;   A --> C\["Frequency Component"]
+    E --> H
+    F --> H
+    G --> H
 
-&#x20;   A --> D\["Monetary Component"]
+    H --> I
+    I --> J
+    I --> K
+    I --> L
 
+    classDef input fill:#34495e,color:#ffffff,stroke:#8C8777
+    classDef component fill:#285943,color:#ffffff,stroke:#9BCB87
+    classDef score fill:#8A4B27,color:#ffffff,stroke:#F4A261
+    classDef category fill:#34495e,color:#ffffff,stroke:#8C8777
 
-
-&#x20;   B --> E\["65% Weight"]
-
-&#x20;   C --> F\["20% Weight"]
-
-&#x20;   D --> G\["15% Weight"]
-
-
-
-&#x20;   E --> H\["Combined Heuristic Score"]
-
-&#x20;   F --> H
-
-&#x20;   G --> H
-
-
-
-&#x20;   H --> I\["Risk Categorisation"]
-
-&#x20;   I --> J\["Low Risk"]
-
-&#x20;   I --> K\["Medium Risk"]
-
-&#x20;   I --> L\["High Risk"]
-
-```
-
-
-
-| Component | Weight |
-
-| --------- | -----: |
-
-| Recency   |    65% |
-
-| Frequency |    20% |
-
-| Monetary  |    15% |
-
-
+    class A input
+    class B,C,D,E,F,G component
+    class H,I score
+    class J,K,L category
+Component	Weight
+Recency	65%
+Frequency	20%
+Monetary	15%
 
 The scoring system uses percentile-based scaling for frequency and monetary values and a configurable inactivity threshold for recency.
 
-
-
 The dashboard categorises customers into Low, Medium, and High risk groups.
-
-
 
 Methodological distinction: This is a heuristic risk indicator. It is not a trained machine-learning model and must not be interpreted as a calibrated churn probability.
 
-
-
-7\. Statistical Analysis Framework
-
-
+7. Statistical Analysis Framework
 
 The research component investigates whether customer purchasing behaviour differs between customers who remain active and those who become inactive during the outcome window.
 
-
-
 Planned Statistical Methods
-
-
-
-| Method               | Research purpose                                                |
-
-| -------------------- | --------------------------------------------------------------- |
-
-| Mann–Whitney U       | Compare RFM distributions between active and inactive customers |
-
-| Spearman Correlation | Examine monotonic relationships between customer features       |
-
-| Chi-square Test      | Examine associations between categorical variables              |
-
-| Kruskal–Wallis       | Compare outcome distributions across customer segments          |
-
-| Bootstrap            | Estimate confidence intervals                                   |
-
-| Sensitivity Analysis | Examine robustness under alternative analytical configurations  |
-
-
-
+Method	Research Purpose
+Mann–Whitney U	Compare RFM distributions between active and inactive customers
+Spearman Correlation	Examine monotonic relationships between customer features
+Chi-square Test	Examine associations between categorical variables
+Kruskal–Wallis	Compare outcome distributions across customer segments
+Bootstrap	Estimate confidence intervals
+Sensitivity Analysis	Examine robustness under alternative analytical configurations
 Statistical Workflow
+flowchart TB
+    A["Customer-Level Dataset"]
+    B["Exploratory Data Analysis"]
+    C["Define Research Hypotheses"]
+    D["Select Statistical Tests"]
+    E["Calculate Test Statistics"]
+    F["Estimate Effect Sizes"]
+    G["Bootstrap Confidence Intervals"]
+    H["Multiple Testing Correction"]
+    I["Sensitivity Analysis"]
+    J["Interpret Findings"]
 
+    A --> B --> C --> D --> E
+    E --> F --> G --> H --> I --> J
 
+    classDef start fill:#34495e,color:#ffffff,stroke:#8C8777
+    classDef analysis fill:#285943,color:#ffffff,stroke:#9BCB87
+    classDef validation fill:#8A4B27,color:#ffffff,stroke:#F4A261
 
-```mermaid
-
-flowchart TD
-
-&#x20;   A\["Customer-Level Dataset"] --> B\["Exploratory Data Analysis"]
-
-
-
-&#x20;   B --> C\["Define Research Hypotheses"]
-
-
-
-&#x20;   C --> D\["Select Statistical Tests"]
-
-
-
-&#x20;   D --> E\["Calculate Test Statistics"]
-
-
-
-&#x20;   E --> F\["Estimate Effect Sizes"]
-
-
-
-&#x20;   F --> G\["Bootstrap Confidence Intervals"]
-
-
-
-&#x20;   G --> H\["Multiple Testing Correction"]
-
-
-
-&#x20;   H --> I\["Sensitivity Analysis"]
-
-
-
-&#x20;   I --> J\["Interpret Findings"]
-
-```
-
-
+    class A start
+    class B,C,D,E,F analysis
+    class G,H,I,J validation
 
 The planned primary analysis includes six hypotheses, with Holm correction across the six primary tests.
 
-
-
 Pairwise post-hoc comparisons will use a separate multiple-testing correction family.
-
-
 
 Effect sizes and confidence intervals will accompany statistical significance wherever appropriate.
 
-
-
 Status: This statistical module is not yet complete. The methods above describe the planned analysis, not completed research findings.
 
-
-
-8\. Interactive Dashboard
-
-
+8. Interactive Dashboard
 
 The project includes a Streamlit dashboard designed to make customer analytics easier to explore.
 
-
-
 Dashboard Modules
-
-
-
-| Module             | Purpose                               |
-
-| ------------------ | ------------------------------------- |
-
-| Overview           | High-level customer analytics         |
-
-| Customer Explorer  | Explore individual customer behaviour |
-
-| Retention Playbook | Review retention recommendations      |
-
-| Profile            | Customer profile functionality        |
-
-| About              | Project information                   |
-
-
-
+Module	Purpose
+Overview	High-level customer analytics
+Customer Explorer	Explore individual customer behaviour
+Retention Playbook	Review retention recommendations
+Profile	Customer profile functionality
+About	Project information
 Technology Stack
-
-
-
-\* Python
-
-\* Pandas
-
-\* NumPy
-
-\* SciPy
-
-\* Streamlit
-
-\* Plotly
-
-\* OpenPyXL
-
-
-
-9\. Repository Structure
-
-
-
-```text
-
+Python
+Pandas
+NumPy
+SciPy
+Streamlit
+Plotly
+OpenPyXL
+9. Repository Structure
 ChurnGuard-AI/
-
 │
-
 ├── churnguard/
-
-│   ├── \_\_init\_\_.py
-
+│   ├── __init__.py
 │   ├── config.py
-
-│   ├── data\_pipeline.py
-
+│   ├── data_pipeline.py
 │   ├── features.py
-
-│   └── build\_dataset.py
-
+│   └── build_dataset.py
 │
-
 ├── tests/
-
-│   ├── \_\_init\_\_.py
-
-│   └── test\_pipeline.py
-
+│   ├── __init__.py
+│   └── test_pipeline.py
 │
-
 ├── data/
-
 │   ├── raw/
-
 │   └── processed/
-
 │
-
-├── churnguard\_scipy\_redesign.py
-
-├── requirements\_voice.txt
-
+├── churnguard_scipy_redesign.py
+├── requirements_voice.txt
 ├── .gitignore
-
 └── README.md
-
-```
-
-
 
 Raw data, generated customer-level datasets, virtual environments, and local backups are intentionally excluded from version control.
 
-
-
-10\. Installation and Setup
-
-
-
+10. Installation and Setup
 Step 1: Clone the repository
-
-
-
-```bash
-
 git clone https://github.com/akshaykumarj952-commits/ChurnGuard-AI.git
 
-
-
 cd ChurnGuard-AI
-
-```
-
-
-
 Step 2: Create a virtual environment
-
-
-
-```bash
-
 python -m venv .venv
-
-```
-
-
 
 Activate it on Windows:
 
-
-
-```powershell
-
-.venv\\Scripts\\Activate.ps1
-
-```
-
-
-
+.venv\Scripts\Activate.ps1
 Step 3: Install dependencies
-
-
-
-```bash
-
-pip install -r requirements\_voice.txt
-
+pip install -r requirements_voice.txt
 pip install scipy openpyxl
-
-```
-
-
-
 Step 4: Download the dataset
 
-
-
-Download the Online Retail dataset from:
-
-
+Download the Online Retail dataset from the UCI Machine Learning Repository:
 
 https://archive.ics.uci.edu/dataset/352/online+retail
 
-
-
 Place the downloaded Excel file at:
 
-
-
-```text
-
 data/raw/Online Retail.xlsx
-
-```
-
-
-
 Step 5: Build the processed dataset
-
-
-
-```bash
-
-python -m churnguard.build\_dataset
-
-```
-
-
+python -m churnguard.build_dataset
 
 The pipeline generates:
 
-
-
-\* `data/processed/customers\_features.csv`
-
-\* `data/processed/data\_audit.json`
-
-\* `data/processed/data\_audit.md`
-
-
+data/processed/customers_features.csv
+data/processed/data_audit.json
+data/processed/data_audit.md
 
 The generated customer-level CSV is excluded from Git version control.
 
-
-
 Step 6: Run the dashboard
-
-
-
-```bash
-
-python -m streamlit run churnguard\_scipy\_redesign.py
-
-```
-
-
-
+python -m streamlit run churnguard_scipy_redesign.py
 Step 7: Run automated tests
-
-
-
-```bash
-
-python -m unittest tests.test\_pipeline -v
-
-```
-
-
+python -m unittest tests.test_pipeline -v
 
 The initial pipeline test suite contains 18 tests covering synthetic and real-data scenarios.
 
-
-
-11\. Reproducibility and Data Protection
-
-
+11. Reproducibility and Data Protection
 
 ChurnGuard is designed to keep analytical outputs separate from private input data.
 
-
-
 Important practices include:
 
-
-
-\* Documented preprocessing rules.
-
-\* Fixed historical evaluation cutoff.
-
-\* Separation of historical features and future outcomes.
-
-\* Automated pipeline tests.
-
-\* Duplicate transaction auditing.
-
-\* Explicit exclusion reporting.
-
-\* Customer-level data excluded from the public repository.
-
-
-
-12\. Limitations
-
-
+Documented preprocessing rules
+Fixed historical evaluation cutoff
+Separation of historical features and future outcomes
+Automated pipeline tests
+Duplicate transaction auditing
+Explicit exclusion reporting
+Customer-level data excluded from the public repository
+12. Limitations
 
 The current research has several limitations:
 
+The dataset represents a single online retail business.
+Customer identifiers are missing for a substantial proportion of transactions.
+The inactivity definition is based on a fixed 90-day observation window.
+The evaluation period includes seasonal purchasing effects.
+The current risk score is heuristic rather than model-trained.
+RFM segments and risk categories partly depend on recency, so some statistical relationships are structurally expected.
+Statistical validation and sensitivity analyses are still in development.
+13. Development Roadmap
 
+The project is being developed incrementally, with an emphasis on reproducibility and statistical validity.
 
-1\. The dataset represents a single online retail business.
+flowchart LR
+    A["Phase 1<br/>Data Acquisition"]
+    B["Phase 2<br/>Data Cleaning"]
+    C["Phase 3<br/>Feature Engineering"]
+    D["Phase 4<br/>Statistical Analysis"]
+    E["Phase 5<br/>Validation & Sensitivity"]
+    F["Phase 6<br/>Dashboard Integration"]
+    G["Phase 7<br/>Research Poster"]
 
-2\. Customer identifiers are missing for a substantial proportion of transactions.
+    A --> B --> C --> D --> E --> F --> G
 
-3\. The inactivity definition is based on a fixed 90-day observation window.
+    classDef completed fill:#285943,color:#ffffff,stroke:#9BCB87,stroke-width:2px
+    classDef pending fill:#34495e,color:#ffffff,stroke:#8C8777,stroke-width:2px
 
-4\. The evaluation period includes seasonal purchasing effects.
+    class A,B,C completed
+    class D,E,F,G pending
+Implementation Checklist
 
-5\. The current risk score is heuristic rather than model-trained.
+Completed
 
-6\. RFM segments and risk categories partly depend on recency, so some statistical relationships are structurally expected.
+Initial project structure
 
-7\. Statistical validation and sensitivity analyses are still in development.
+Dataset acquisition
 
+Data cleaning pipeline
 
+Customer-level RFM feature engineering
 
-13\. Development Roadmap
+Historical inactivity outcome construction
 
+Initial automated tests
 
+GitHub repository
 
-```mermaid
+In Development
 
-flowchart TD
+Standalone heuristic scoring implementation
 
-&#x20;   A\["Phase 1<br/>Data Acquisition"] --> B\["Phase 2<br/>Data Cleaning"]
+Heuristic equivalence tests
 
-&#x20;   B --> C\["Phase 3<br/>Feature Engineering"]
+Statistical hypothesis testing
 
-&#x20;   C --> D\["Phase 4<br/>Statistical Analysis"]
+Effect-size estimation
 
-&#x20;   D --> E\["Phase 5<br/>Validation \& Sensitivity"]
+Bootstrap confidence intervals
 
-&#x20;   E --> F\["Phase 6<br/>Dashboard Integration"]
+Sensitivity analysis
 
-&#x20;   F --> G\["Phase 7<br/>Research Poster"]
+Dashboard integration
 
+Research poster
 
-
-&#x20;   style A fill:#285943,color:#fff
-
-&#x20;   style B fill:#285943,color:#fff
-
-&#x20;   style C fill:#285943,color:#fff
-
-&#x20;   style D fill:#34495e,color:#fff
-
-&#x20;   style E fill:#34495e,color:#fff
-
-&#x20;   style F fill:#34495e,color:#fff
-
-&#x20;   style G fill:#34495e,color:#fff
-
-```
-
-
-
-\* \[x] Initial project structure
-
-\* \[x] Dataset acquisition
-
-\* \[x] Data cleaning pipeline
-
-\* \[x] Customer-level RFM feature engineering
-
-\* \[x] Historical inactivity outcome construction
-
-\* \[x] Initial automated tests
-
-\* \[x] GitHub repository
-
-\* \[ ] Standalone heuristic scoring implementation
-
-\* \[ ] Heuristic equivalence tests
-
-\* \[ ] Statistical hypothesis testing
-
-\* \[ ] Effect-size estimation
-
-\* \[ ] Bootstrap confidence intervals
-
-\* \[ ] Sensitivity analysis
-
-\* \[ ] Dashboard integration
-
-\* \[ ] Research poster
-
-
-
-14\. Conference Submission
-
-
+14. Conference Submission
 
 SciPy India 2026
 
-
-
 Proposed poster title:
-
-
 
 ChurnGuard: An Open-Source Statistical Framework for Customer Retention Analysis Using Python
 
-
-
 The proposal has been submitted. Submission does not imply acceptance or conference endorsement.
 
+15. Dataset Citation and Acknowledgements
 
-
-15\. Dataset Citation and Acknowledgements
-
-
-
-Chen, D. (2015). \*Online Retail\* \[Dataset]. UCI Machine Learning Repository.
-
-
+Chen, D. (2015). Online Retail [Dataset]. UCI Machine Learning Repository.
 
 https://doi.org/10.24432/C5BW33
 
-
-
 Dataset licence: Creative Commons Attribution 4.0 International (CC BY 4.0).
-
-
 
 The dataset is provided by the UCI Machine Learning Repository. Its original attribution and licence must be preserved when using or redistributing the data.
 
+16. Author
 
-
-16\. Author
-
-
-
-&#x20; Akshay Kumar Jha
-
-
+Akshay Kumar Jha
 
 Student | Python | Data Analytics | Statistical Computing
 
-
-
 GitHub: https://github.com/akshaykumarj952-commits
 
-
-
-\---
-
-
-
-<p align="center">
-
-&#x20; <b>ChurnGuard AI</b><br>
-
-&#x20; Building transparent and reproducible customer analytics with Python.
-
-</p>
-
-
-
+<p align="center"> <strong>ChurnGuard AI</strong><br> Building transparent and reproducible customer analytics with Python. </p>
