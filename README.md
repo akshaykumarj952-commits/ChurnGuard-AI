@@ -1,8 +1,8 @@
-\# ChurnGuard AI
+&#x20;ChurnGuard AI
 
 
 
-\### An Open-Source Statistical Framework for Customer Retention Analysis Using Python
+&#x20;An Open-Source Statistical Framework for Customer Retention Analysis Using Python
 
 
 
@@ -34,7 +34,7 @@ The project combines customer-level RFM analysis, transparent heuristic risk sco
 
 
 
-\# 1. Project Overview
+1\. Project Overview
 
 
 
@@ -66,7 +66,7 @@ The primary objective is to create a transparent and reproducible statistical fr
 
 
 
-\# 2. System Architecture
+2\. System Architecture
 
 
 
@@ -126,7 +126,7 @@ flowchart TD
 
 
 
-\## Core Components
+Core Components
 
 
 
@@ -146,7 +146,7 @@ flowchart TD
 
 
 
-\# 3. Data Processing Pipeline
+3\. Data Processing Pipeline
 
 
 
@@ -196,7 +196,7 @@ flowchart TD
 
 
 
-\### Initial Data Audit
+Initial Data Audit
 
 
 
@@ -226,7 +226,7 @@ These figures describe the initial cleaning pipeline. The audit reports preserve
 
 
 
-\*\*Data quality considerations:\*\*
+Data quality considerations:
 
 
 
@@ -246,7 +246,7 @@ Approximately £1.76 million in positive sales associated with missing customer 
 
 
 
-\# 4. RFM Feature Engineering
+4\. RFM Feature Engineering
 
 
 
@@ -282,7 +282,7 @@ flowchart LR
 
 
 
-\### Feature Definitions
+Feature Definitions
 
 
 
@@ -302,7 +302,7 @@ The analysis uses GBP (£) as the transaction currency.
 
 
 
-\# 5. Historical Evaluation Framework
+5\. Historical Evaluation Framework
 
 
 
@@ -314,7 +314,7 @@ This helps prevent temporal data leakage.
 
 
 
-\### Evaluation Configuration
+Evaluation Configuration
 
 
 
@@ -378,11 +378,11 @@ A customer is labelled inactive when they have no valid purchase in the subseque
 
 
 
-\*\*Important:\*\* This is an operational inactivity proxy, not proof of permanent customer churn.
+Important: This is an operational inactivity proxy, not proof of permanent customer churn.
 
 
 
-\### Initial Cohort Results
+Initial Cohort Results
 
 
 
@@ -402,7 +402,7 @@ Customers first appearing after the historical cutoff are excluded from the eval
 
 
 
-\# 6. Heuristic Risk Scoring
+6\. Heuristic Risk Scoring
 
 
 
@@ -474,11 +474,11 @@ The dashboard categorises customers into Low, Medium, and High risk groups.
 
 
 
-\*\*Methodological distinction:\*\* This is a heuristic risk indicator. It is not a trained machine-learning model and must not be interpreted as a calibrated churn probability.
+Methodological distinction: This is a heuristic risk indicator. It is not a trained machine-learning model and must not be interpreted as a calibrated churn probability.
 
 
 
-\# 7. Statistical Analysis Framework
+7\. Statistical Analysis Framework
 
 
 
@@ -486,7 +486,7 @@ The research component investigates whether customer purchasing behaviour differ
 
 
 
-\### Planned Statistical Methods
+Planned Statistical Methods
 
 
 
@@ -508,7 +508,7 @@ The research component investigates whether customer purchasing behaviour differ
 
 
 
-\### Statistical Workflow
+Statistical Workflow
 
 
 
@@ -566,11 +566,11 @@ Effect sizes and confidence intervals will accompany statistical significance wh
 
 
 
-\*\*Status:\*\* This statistical module is not yet complete. The methods above describe the planned analysis, not completed research findings.
+Status: This statistical module is not yet complete. The methods above describe the planned analysis, not completed research findings.
 
 
 
-\# 8. Interactive Dashboard
+8\. Interactive Dashboard
 
 
 
@@ -578,7 +578,7 @@ The project includes a Streamlit dashboard designed to make customer analytics e
 
 
 
-\### Dashboard Modules
+Dashboard Modules
 
 
 
@@ -598,7 +598,7 @@ The project includes a Streamlit dashboard designed to make customer analytics e
 
 
 
-\### Technology Stack
+Technology Stack
 
 
 
@@ -618,7 +618,7 @@ The project includes a Streamlit dashboard designed to make customer analytics e
 
 
 
-\# 9. Repository Structure
+9\. Repository Structure
 
 
 
@@ -674,11 +674,11 @@ Raw data, generated customer-level datasets, virtual environments, and local bac
 
 
 
-\# 10. Installation and Setup
+10\. Installation and Setup
 
 
 
-\### Step 1: Clone the repository
+Step 1: Clone the repository
 
 
 
@@ -694,7 +694,7 @@ cd ChurnGuard-AI
 
 
 
-\### Step 2: Create a virtual environment
+Step 2: Create a virtual environment
 
 
 
@@ -718,7 +718,7 @@ Activate it on Windows:
 
 
 
-\### Step 3: Install dependencies
+Step 3: Install dependencies
 
 
 
@@ -732,7 +732,7 @@ pip install scipy openpyxl
 
 
 
-\### Step 4: Download the dataset
+Step 4: Download the dataset
 
 
 
@@ -756,7 +756,7 @@ data/raw/Online Retail.xlsx
 
 
 
-\### Step 5: Build the processed dataset
+Step 5: Build the processed dataset
 
 
 
@@ -784,7 +784,7 @@ The generated customer-level CSV is excluded from Git version control.
 
 
 
-\### Step 6: Run the dashboard
+Step 6: Run the dashboard
 
 
 
@@ -796,7 +796,7 @@ python -m streamlit run churnguard\_scipy\_redesign.py
 
 
 
-\### Step 7: Run automated tests
+Step 7: Run automated tests
 
 
 
@@ -812,7 +812,7 @@ The initial pipeline test suite contains 18 tests covering synthetic and real-da
 
 
 
-\# 11. Reproducibility and Data Protection
+11\. Reproducibility and Data Protection
 
 
 
@@ -840,7 +840,7 @@ Important practices include:
 
 
 
-\# 12. Limitations
+12\. Limitations
 
 
 
@@ -864,7 +864,7 @@ The current research has several limitations:
 
 
 
-\# 13. Development Roadmap
+13\. Development Roadmap
 
 
 
@@ -936,11 +936,11 @@ flowchart TD
 
 
 
-\# 14. Conference Submission
+14\. Conference Submission
 
 
 
-\*\*SciPy India 2026\*\*
+SciPy India 2026
 
 
 
@@ -948,7 +948,7 @@ Proposed poster title:
 
 
 
-\*ChurnGuard: An Open-Source Statistical Framework for Customer Retention Analysis Using Python\*
+ChurnGuard: An Open-Source Statistical Framework for Customer Retention Analysis Using Python
 
 
 
@@ -956,7 +956,7 @@ The proposal has been submitted. Submission does not imply acceptance or confere
 
 
 
-\# 15. Dataset Citation and Acknowledgements
+15\. Dataset Citation and Acknowledgements
 
 
 
@@ -976,11 +976,11 @@ The dataset is provided by the UCI Machine Learning Repository. Its original att
 
 
 
-\# 16. Author
+16\. Author
 
 
 
-\*\*Akshay Kumar Jha\*\*
+&#x20; Akshay Kumar Jha
 
 
 
